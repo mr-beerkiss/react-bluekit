@@ -108,6 +108,7 @@ export default function createBlueKit(config) {
   const gulpRuntime = gulp || packagedGulp
   const buildCommandName = buildCommand || 'build-bluekit'
   const watchCommandName = watchCommand || 'watch-bluekit'
+  const preferNodeRequire = config.preferNodeRequire || false
 
   const watch = function() {
     const watchPaths = config.paths.map(file => (
@@ -150,7 +151,10 @@ export default function createBlueKit(config) {
     const indexFile = path.join(config.baseDir, 'componentsIndex.js')
     fs.writeFileSync(
       indexFile,
-      nunjuckEnv.render('componentsIndex.nunjucks', {components: components.concat(packageComponents)})
+      nunjuckEnv.render('componentsIndex.nunjucks', {
+        components: components.concat(packageComponents),
+        preferNodeRequire: preferNodeRequire
+      })
     );
 
     console.log(`BlueKit generated components index to file: ${indexFile}`) // eslint-disable-line no-console
